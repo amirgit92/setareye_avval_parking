@@ -10,19 +10,17 @@ import com.setare.avval.Vehicle.VehicleRepository;
 import com.setare.avval.Vehicle.VehicleType;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class ParkingServiceImp implements ParkingService {
     @Autowired
     ParkingRepository parkingRepository;
@@ -65,11 +63,14 @@ public class ParkingServiceImp implements ParkingService {
         try {
             Parking parking = parkingRepository.findFirstByVehicleOrderByIdDesc(mapper.map(vehicleDTO, Vehicle.class));
             float price = priceCalculating(parking.getPriceRate().getPriceRateType(), parking.getEntranceTime(), exitTime);
+            if (price == 0.0f) {
+                throw new Exception("price calculation failed!");
+            }
             parking.setParkingPrice(price);
             parking.setExitTime(exitTime);
             return mapper.map(parkingRepository.save(parking), ParkingDTO.class);
         } catch (Exception e) {
-            throw new Exception("exiting calculation failed! please try again.");
+            throw new Exception("exiting process failed! please try again.");
         }
     }
 
@@ -77,40 +78,43 @@ public class ParkingServiceImp implements ParkingService {
     public List<ReportDTO> report(ReportDTO reportDTO) throws Exception {
         ModelMapper mapper = new ModelMapper();
         try {
-            List<Parking> parkings = parkingRepository.findAllByVehicleAndEntranceAndExit(reportDTO.getLicensePlate(), reportDTO.getEntrance(), reportDTO.getExit());
+            List<Parking> parkings = parkingRepository
+                    .findAllByVehicleAndEntranceTimeAndExitTime(reportDTO.getLicensePlate(), reportDTO.getEntrance(), reportDTO.getExit());
             return parkings.stream().map(parking -> mapper.map(parking, ReportDTO.class)).collect(Collectors.toList());
         } catch (Exception e) {
             throw new Exception("error in retrieving report! try again ");
         }
-
     }
 
     private String setTime() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy/MM/dd - hh:mm a");
         return formatter.format(LocalDateTime.now());
     }
 
-
     private float priceCalculating(PriceRateType priceRateType, String entranceTime, String exitTime) throws ParseException {
 
-        float price;
+        float price = 0.0f;
+        LocalTime entrance = LocalTime.parse(entranceTime);
+        LocalDateTime exit = LocalDateTime.parse(exitTime);
         switch (priceRateType) {
             case hourly -> {
                 // calculating the duration that the vehicle was in parking.
-                LocalTime entrance = LocalTime.parse(entranceTime);
-                LocalTime exit = LocalTime.now();
                 long hours = ChronoUnit.HOURS.between(entrance, exit);
                 long minutes = ChronoUnit.MINUTES.between(entrance, exit) % 60;
                 //if the minutes is more than 30 minutes, normalize it to 1 hour!
                 if (minutes > 30)
-                    hours += ++hours;
+                    hours = ++hours;
                 price = priceRateType.getRate() * hours;
             }
             case daily -> {
-
+                long days = ChronoUnit.DAYS.between(entrance, exit);
+                price = priceRateType.getRate() * days;
+            }
+            case monthly -> {
+                long months = ChronoUnit.MONTHS.between(entrance, exit);
+                price = priceRateType.getRate() * months;
             }
         }
-
-        return 0.0f;
+        return price;
     }
 }

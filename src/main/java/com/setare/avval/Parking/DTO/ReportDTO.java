@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 public class ReportDTO {
-    LocalDateTime entrance;
-    LocalDateTime exit;
+    String entrance;
+    String exit;
     Vehicle licensePlate;
     float parkingPriceRate;
 }

@@ -14,5 +14,5 @@ public interface ParkingRepository extends JpaRepository<Parking, Long> {
     Parking findFirstByVehicleOrderByIdDesc(Vehicle vehicle);
 
     //fetching all rows related to one vehicle in given time duration
-    List<Parking> findAllByVehicleAndEntranceAndExit(Vehicle vehicle, LocalDateTime entrance, LocalDateTime exit);
+    List<Parking> findAllByVehicleAndEntranceTimeAndExitTime(Vehicle vehicle, String entrance, String exit);
 }
