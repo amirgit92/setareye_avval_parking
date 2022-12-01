@@ -8,7 +8,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
-public class ParkingServiceFacilities {
+public class ParkingFacilities {
 
     public static String setTime() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy/MM/dd - hh:mm a");

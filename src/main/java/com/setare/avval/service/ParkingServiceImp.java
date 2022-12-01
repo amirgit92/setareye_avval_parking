@@ -7,7 +7,7 @@ import com.setare.avval.model.Vehicle;
 import com.setare.avval.model.VehicleDTO;
 import com.setare.avval.repository.VehicleRepository;
 import com.setare.avval.model.VehicleType;
-import com.setare.avval.facilities.ParkingServiceFacilities;
+import com.setare.avval.facilities.ParkingFacilities;
 import com.setare.avval.model.Parking;
 import com.setare.avval.model.DTO.ParkingDTO;
 import com.setare.avval.repository.ParkingRepository;
@@ -40,7 +40,7 @@ public class ParkingServiceImp implements ParkingService {
             //fetch the last priceRate
             PriceRate priceRate = priceRateRepository.findTopByOrderByIdDesc();
             Parking newParkingEntry = new Parking();
-            newParkingEntry.setEntranceTime(ParkingServiceFacilities.setTime());
+            newParkingEntry.setEntranceTime(ParkingFacilities.setTime());
             newParkingEntry.setVehicle(newVehicle);
             newParkingEntry.setPriceRate(priceRate);
             parkingRepository.save(newParkingEntry);
@@ -51,10 +51,10 @@ public class ParkingServiceImp implements ParkingService {
     }
     @Override
     public ParkingDTO exitingVehicle(VehicleDTO vehicleDTO) throws Exception {
-        String exitTime = ParkingServiceFacilities.setTime();
+        String exitTime = ParkingFacilities.setTime();
         try {
             Parking parking = parkingRepository.findFirstByVehicleOrderByIdDesc(mapper.map(vehicleDTO, Vehicle.class));
-            float price = ParkingServiceFacilities.priceCalculating(parking.getPriceRate().getPriceRateType(), parking.getEntranceTime(), exitTime);
+            float price = ParkingFacilities.priceCalculating(parking.getPriceRate().getPriceRateType(), parking.getEntranceTime(), exitTime);
             if (price == 0.0f) {
                 throw new Exception("price calculation failed!");
             }
