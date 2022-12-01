@@ -1,6 +1,5 @@
-package com.setare.avval.PriceRate;
+package com.setare.avval.model;
 
-import com.setare.avval.Parking.Parking;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

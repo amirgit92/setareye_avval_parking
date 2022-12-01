@@ -1,4 +1,4 @@
-package com.setare.avval.Vehicle;
+package com.setare.avval.model;
 
 public enum VehicleType {
     savari,

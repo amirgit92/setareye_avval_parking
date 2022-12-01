@@ -1,7 +1,5 @@
-package com.setare.avval.Parking;
+package com.setare.avval.model;
 
-import com.setare.avval.Vehicle.Vehicle;
-import com.setare.avval.Vehicle.VehicleType;
 import lombok.Getter;
 import lombok.Setter;
 

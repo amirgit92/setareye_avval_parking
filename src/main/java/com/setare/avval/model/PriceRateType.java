@@ -1,4 +1,4 @@
-package com.setare.avval.PriceRate;
+package com.setare.avval.model;
 
 import lombok.Getter;
 

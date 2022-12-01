@@ -1,7 +1,8 @@
-package com.setare.avval.Parking;
-import com.setare.avval.Parking.DTO.ReportDTO;
-import com.setare.avval.Vehicle.VehicleDTO;
-import org.springframework.stereotype.Service;
+package com.setare.avval.service;
+import com.setare.avval.model.DTO.ReportDTO;
+import com.setare.avval.model.VehicleDTO;
+import com.setare.avval.model.ParkingDTO;
+
 import java.util.List;
 
 public interface ParkingService {

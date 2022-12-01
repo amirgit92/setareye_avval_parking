@@ -1,22 +1,20 @@
-package com.setare.avval.Parking;
+package com.setare.avval.service;
 
-import com.setare.avval.Parking.DTO.ReportDTO;
-import com.setare.avval.PriceRate.PriceRate;
-import com.setare.avval.PriceRate.PriceRateRepository;
-import com.setare.avval.PriceRate.PriceRateType;
-import com.setare.avval.Vehicle.Vehicle;
-import com.setare.avval.Vehicle.VehicleDTO;
-import com.setare.avval.Vehicle.VehicleRepository;
-import com.setare.avval.Vehicle.VehicleType;
+import com.setare.avval.model.DTO.ReportDTO;
+import com.setare.avval.model.PriceRate;
+import com.setare.avval.repository.PriceRateRepository;
+import com.setare.avval.model.Vehicle;
+import com.setare.avval.model.VehicleDTO;
+import com.setare.avval.repository.VehicleRepository;
+import com.setare.avval.model.VehicleType;
+import com.setare.avval.facilities.ParkingServiceFacilities;
+import com.setare.avval.model.Parking;
+import com.setare.avval.model.ParkingDTO;
+import com.setare.avval.repository.ParkingRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,7 +40,7 @@ public class ParkingServiceImp implements ParkingService {
             //fetch the last priceRate
             PriceRate priceRate = priceRateRepository.findTopByOrderByIdDesc();
             Parking newParkingEntry = new Parking();
-            newParkingEntry.setEntranceTime(setTime());
+            newParkingEntry.setEntranceTime(ParkingServiceFacilities.setTime());
             newParkingEntry.setVehicle(newVehicle);
             newParkingEntry.setPriceRate(priceRate);
             parkingRepository.save(newParkingEntry);
@@ -51,18 +49,12 @@ public class ParkingServiceImp implements ParkingService {
             throw new Exception("record saving failed. try again!");
         }
     }
-
-    /*todo: should calculate the price in function depends on the hour and the rate
-        also should check if the payment was successful, if not return the roper message
-        and does not save(update) the record in DB.
-        for updating, first the record should be fetched and then manipulated.
-     */
     @Override
     public ParkingDTO exitingVehicle(VehicleDTO vehicleDTO) throws Exception {
-        String exitTime = setTime();
+        String exitTime = ParkingServiceFacilities.setTime();
         try {
             Parking parking = parkingRepository.findFirstByVehicleOrderByIdDesc(mapper.map(vehicleDTO, Vehicle.class));
-            float price = priceCalculating(parking.getPriceRate().getPriceRateType(), parking.getEntranceTime(), exitTime);
+            float price = ParkingServiceFacilities.priceCalculating(parking.getPriceRate().getPriceRateType(), parking.getEntranceTime(), exitTime);
             if (price == 0.0f) {
                 throw new Exception("price calculation failed!");
             }
@@ -84,37 +76,5 @@ public class ParkingServiceImp implements ParkingService {
         } catch (Exception e) {
             throw new Exception("error in retrieving report! try again ");
         }
-    }
-
-    private String setTime() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy/MM/dd - hh:mm a");
-        return formatter.format(LocalDateTime.now());
-    }
-
-    private float priceCalculating(PriceRateType priceRateType, String entranceTime, String exitTime) throws ParseException {
-
-        float price = 0.0f;
-        LocalTime entrance = LocalTime.parse(entranceTime);
-        LocalDateTime exit = LocalDateTime.parse(exitTime);
-        switch (priceRateType) {
-            case hourly -> {
-                // calculating the duration that the vehicle was in parking.
-                long hours = ChronoUnit.HOURS.between(entrance, exit);
-                long minutes = ChronoUnit.MINUTES.between(entrance, exit) % 60;
-                //if the minutes is more than 30 minutes, normalize it to 1 hour!
-                if (minutes > 30)
-                    hours = ++hours;
-                price = priceRateType.getRate() * hours;
-            }
-            case daily -> {
-                long days = ChronoUnit.DAYS.between(entrance, exit);
-                price = priceRateType.getRate() * days;
-            }
-            case monthly -> {
-                long months = ChronoUnit.MONTHS.between(entrance, exit);
-                price = priceRateType.getRate() * months;
-            }
-        }
-        return price;
     }
 }

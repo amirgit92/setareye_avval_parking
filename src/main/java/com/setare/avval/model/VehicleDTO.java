@@ -1,6 +1,5 @@
-package com.setare.avval.Vehicle;
+package com.setare.avval.model;
 
-import com.setare.avval.PriceRate.PriceRateType;
 import lombok.Getter;
 import lombok.Setter;
 

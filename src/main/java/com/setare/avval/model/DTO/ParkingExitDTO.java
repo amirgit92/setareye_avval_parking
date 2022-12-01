@@ -1,7 +1,7 @@
-package com.setare.avval.Parking.DTO;
+package com.setare.avval.model.DTO;
 
-import com.setare.avval.PriceRate.PriceRate;
-import com.setare.avval.Vehicle.Vehicle;
+import com.setare.avval.model.PriceRate;
+import com.setare.avval.model.Vehicle;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,8 +1,8 @@
-package com.setare.avval.Vehicle;
+package com.setare.avval.model;
 
-import com.setare.avval.Parking.Parking;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
@@ -10,6 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 public class Vehicle {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -19,4 +20,9 @@ public class Vehicle {
 
     @OneToMany(mappedBy = "vehicle")
     private List<Parking> parking;
+
+    public Vehicle(VehicleType vehicleType, String licensePlate) {
+        this.setVehicleType(vehicleType);
+        this.licensePlate = licensePlate;
+    }
 }

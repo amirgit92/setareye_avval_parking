@@ -1,10 +1,10 @@
-package com.setare.avval.Parking;
+package com.setare.avval.repository;
 
-import com.setare.avval.Vehicle.Vehicle;
+import com.setare.avval.model.Vehicle;
+import com.setare.avval.model.Parking;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository

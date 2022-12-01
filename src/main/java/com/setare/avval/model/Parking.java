@@ -1,14 +1,14 @@
-package com.setare.avval.Parking;
+package com.setare.avval.model;
 
-import com.setare.avval.PriceRate.PriceRate;
-import com.setare.avval.Vehicle.Vehicle;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @Getter
 @Entity
+@NoArgsConstructor
 public class Parking {
 
     @Id
@@ -23,6 +23,12 @@ public class Parking {
     private Vehicle vehicle;
 
     @ManyToOne
-    @JoinColumn(name = "rate_id",nullable = false)
+    @JoinColumn(name = "rate_id", nullable = false)
     private PriceRate priceRate;
+
+    public Parking(String entranceTime, Vehicle vehicle, PriceRate priceRate) {
+        this.entranceTime = entranceTime;
+        this.vehicle = vehicle;
+        this.priceRate = priceRate;
+    }
 }

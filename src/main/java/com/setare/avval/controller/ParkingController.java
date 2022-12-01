@@ -1,11 +1,9 @@
-package com.setare.avval.Parking;
+package com.setare.avval.controller;
 
-import com.setare.avval.Parking.DTO.ParkingEntranceDTO;
-import com.setare.avval.Parking.DTO.ParkingExitDTO;
-import com.setare.avval.Parking.DTO.ReportDTO;
-import com.setare.avval.Vehicle.VehicleDTO;
+import com.setare.avval.model.DTO.ReportDTO;
+import com.setare.avval.model.VehicleDTO;
+import com.setare.avval.service.ParkingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
