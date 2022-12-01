@@ -4,7 +4,6 @@ import com.setare.avval.Vehicle.VehicleDTO;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
-@Service
 public interface ParkingService {
     ParkingDTO enteringVehicle(VehicleDTO vehicleDTO) throws Exception;
 

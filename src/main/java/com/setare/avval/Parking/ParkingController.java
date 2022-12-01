@@ -5,18 +5,18 @@ import com.setare.avval.Parking.DTO.ParkingExitDTO;
 import com.setare.avval.Parking.DTO.ReportDTO;
 import com.setare.avval.Vehicle.VehicleDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/parking")
+@RequestMapping("/api/parking/")
 public class ParkingController {
     @Autowired
     ParkingService parkingService;
 
+    @PostMapping("/entering")
     public ResponseEntity<?> enteringVehicle(@RequestBody VehicleDTO vehicleDTO) {
         try {
             return ResponseEntity.status(HttpStatus.OK)
@@ -26,6 +26,7 @@ public class ParkingController {
                     .body(e.getMessage());
         }
     }
+    @PutMapping("/exiting")
     public ResponseEntity<?> exitingVehicle(@RequestBody VehicleDTO vehicleDTO) {
         try {
             return ResponseEntity.status(HttpStatus.OK)
@@ -36,6 +37,7 @@ public class ParkingController {
         }
     }
 
+    @GetMapping("/report")
     public ResponseEntity<?> report(@RequestBody ReportDTO reportDTO) {
         try{
             return ResponseEntity.status(HttpStatus.OK)
