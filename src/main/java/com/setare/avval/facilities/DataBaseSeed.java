@@ -4,6 +4,7 @@ import com.setare.avval.model.*;
 import com.setare.avval.repository.ParkingRepository;
 import com.setare.avval.repository.PriceRateRepository;
 import com.setare.avval.repository.VehicleRepository;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
