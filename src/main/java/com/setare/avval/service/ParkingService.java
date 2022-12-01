@@ -1,7 +1,7 @@
 package com.setare.avval.service;
 import com.setare.avval.model.DTO.ReportDTO;
 import com.setare.avval.model.VehicleDTO;
-import com.setare.avval.model.ParkingDTO;
+import com.setare.avval.model.DTO.ParkingDTO;
 
 import java.util.List;
 

@@ -9,7 +9,7 @@ import com.setare.avval.repository.VehicleRepository;
 import com.setare.avval.model.VehicleType;
 import com.setare.avval.facilities.ParkingServiceFacilities;
 import com.setare.avval.model.Parking;
-import com.setare.avval.model.ParkingDTO;
+import com.setare.avval.model.DTO.ParkingDTO;
 import com.setare.avval.repository.ParkingRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

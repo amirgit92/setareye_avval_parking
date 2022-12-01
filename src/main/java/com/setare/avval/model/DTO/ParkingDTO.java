@@ -1,5 +1,6 @@
-package com.setare.avval.model;
+package com.setare.avval.model.DTO;
 
+import com.setare.avval.model.Vehicle;
 import lombok.Getter;
 import lombok.Setter;
 
